@@ -31,7 +31,6 @@ import { RecipeEditComponent } from './recipes/recipe-edit/recipe-edit.component
     RecipeStartComponent,
     RecipeEditComponent,
     
-
   ],
   imports: [ 
     BrowserModule,
