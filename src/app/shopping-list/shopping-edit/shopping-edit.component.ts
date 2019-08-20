@@ -20,7 +20,7 @@ import { Subscription } from 'rxjs';
 export class ShoppingListEditComponent implements OnInit, OnDestroy {
   //@ViewChild('nameInput') nameInputRef: ElementRef;
   //@ViewChild('amountInput') amountInputRef: ElementRef;
-  @ViewChild('f') slForm: NgForm;
+  @ViewChild('f', { static: true }) slForm: NgForm;
   subscription: Subscription;
   editMode = false;
   editedItemIndex: number;
