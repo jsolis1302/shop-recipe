@@ -26,7 +26,10 @@ export class AuthService {
   user = new BehaviorSubject<User>(null);
   private tokenExpirationTimer: any;
 
-  constructor(private http: HttpClient, private router: Router, private store: Store<fromApp.AppState>) {}
+  constructor(
+    private http: HttpClient, 
+    private router: Router, 
+    private store: Store<fromApp.AppState>) {}
 
   signup(email: string, password: string) {
     return this.http
@@ -111,7 +114,7 @@ export class AuthService {
 
   logout() {
     //this.user.next(null);
-    this.store.dispatch(new AuthActions.Logout())
+    this.store.dispatch(new AuthActions.Logout());
     this.router.navigate(['/auth']);
     localStorage.removeItem('userData');
     if (this.tokenExpirationTimer) {
