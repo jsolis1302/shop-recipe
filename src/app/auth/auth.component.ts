@@ -1,4 +1,4 @@
-import { Component, OnInit, ComponentFactoryResolver, ViewChild } from '@angular/core';
+import { Component, OnInit, ComponentFactoryResolver, ViewChild, OnDestroy } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { Router } from '@angular/router';
 import { Observable, Subscription } from 'rxjs';
@@ -15,7 +15,7 @@ import { PlaceholderDirective } from '../shared/placeholder/placeholder.directiv
   selector: 'app-auth',
   templateUrl: './auth.component.html'
 })
-export class AuthComponent implements OnInit{
+export class AuthComponent implements OnInit, OnDestroy{
   isLoginMode = true;
   isLoading = false;
   error: string = null;
@@ -40,6 +40,12 @@ export class AuthComponent implements OnInit{
         this.showErrorAlert(this.error);
       }
     });
+  }
+
+  ngOnDestroy(){
+    if(this.closeSub){
+      this.closeSub.unsubscribe();
+    }
   }
 
   onSubmit(form: NgForm) {
@@ -81,7 +87,22 @@ export class AuthComponent implements OnInit{
   }
 
   private showErrorAlert(message: string) {
-     const alertCmp = new AlertComponent();
+    const alertCmpFactory = this.componentFactoryResolver.resolveComponentFactory(AlertComponent);
+    const hostViewContainerRef = this.alertHost.viewContainerRef;
+
+    hostViewContainerRef.clear();
+    const componentRef = hostViewContainerRef.createComponent(alertCmpFactory);
+
+    componentRef.instance.message = message;
+
+    this.closeSub = componentRef.instance.close.subscribe(
+      ()=>{
+        this.closeSub.unsubscribe();
+        hostViewContainerRef.clear();
+      });
+
+    
+     //const alertCmp = new AlertComponent();
     // const alertCmpFactory = this.componentFactoryResolver.resolveComponentFactory(
     //   AlertComponent
     // );
