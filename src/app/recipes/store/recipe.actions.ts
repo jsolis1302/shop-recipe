@@ -15,4 +15,4 @@ export class FetchRecipes implements Action {
 
 }
 
-export type RecipesActions = SetRecipes;
+export type RecipesActions = SetRecipes | FetchRecipes;
